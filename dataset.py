@@ -22,7 +22,7 @@ shot_way_info = {'Amazon_clothing':{'pairs':[(5,3), (5,5), (3,3), (3,2) ], 'Q':1
                  'dblp':{'pairs':[(5,3), (5,5), (10,5), (10,3)],'Q':10},
                  'email':{'pairs':[(5,3), (5,5), (7,3), (7,5)],'Q':5},
                  'reddit':{'pairs':[(5,3), (5,5),  (10,3), (10,5)],'Q':10},
-                 'cora':{'pairs':[(5,3), (5,5), (10,3), (10,5)],'Q':10},
+                 'cora-full':{'pairs':[(5,3), (5,5), (10,3), (10,5)],'Q':10},
                  'CoauthorCSDataset':{'pairs':[(5,3), (5,5), (3,2), (3,3)],'Q':10},
                  'AmazonCoBuyComputerDataset':{'pairs':[(3,2), (3,3)],'Q':10},
                  'WikiCSDataset':{'pairs':[(3,2), (3,3)],'Q':10},}
@@ -198,7 +198,7 @@ def load_data(dataset_source):
         adj = sparse_mx_to_torch_sparse_tensor(adj)
 
     elif dataset_source=='cora-full':
-        adj, features, labels, node_names, attr_names, class_names, metadata=load_npz_to_sparse_graph(DATASET_DIR / 'cora/cora_full.npz')
+        adj, features, labels, node_names, attr_names, class_names, metadata=load_npz_to_sparse_graph(DATASET_DIR / 'cora-full/cora_full.npz')
              
         sparse_mx = adj.tocoo().astype(np.float32)
         indices =np.vstack((sparse_mx.row, sparse_mx.col)).astype(np.int64)
