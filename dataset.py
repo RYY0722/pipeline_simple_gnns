@@ -15,7 +15,7 @@ from importlib import import_module
 from pathlib import Path
 DATASET_DIR = Path(r'D:\OneDrive - HKUST Connect\Courses\COMP5331\Project\final_data')
 valid_num_dic = {'Amazon_clothing': 20, 'Amazon_eletronics': 36, 'dblp': 27}
-dgl_dataset = ['CoauthorCSDataset']
+dgl_dataset = ['CoauthorCSDataset', 'AmazonCoBuyComputerDataset', 'WikiCSDataset']
 ## N, K --> N-way & K-shot
 shot_way_info = {'Amazon_clothing':{'pairs':[(5,3), (5,5), (3,3), (3,2) ], 'Q':10},
                  'Amazon_eletronics':{'pairs':[(5,3), (5,5), (10,5), (10,3)],'Q':10},
@@ -23,7 +23,9 @@ shot_way_info = {'Amazon_clothing':{'pairs':[(5,3), (5,5), (3,3), (3,2) ], 'Q':1
                  'email':{'pairs':[(5,3), (5,5), (7,3), (7,5)],'Q':5},
                  'reddit':{'pairs':[(5,3), (5,5),  (10,3), (10,5)],'Q':10},
                  'cora':{'pairs':[(5,3), (5,5), (10,3), (10,5)],'Q':10},
-                 'CoauthorCSDataset':{'pairs':[(5,3), (5,5), (3,2), (3,3)],'Q':10},}
+                 'CoauthorCSDataset':{'pairs':[(5,3), (5,5), (3,2), (3,3)],'Q':10},
+                 'AmazonCoBuyComputerDataset':{'pairs':[(3,2), (3,3)],'Q':10},
+                 'WikiCSDataset':{'pairs':[(3,2), (3,3)],'Q':10},}
 
 def load_data(dataset_source):
     class_list_train,class_list_valid,class_list_test=json.load(open(DATASET_DIR / '{}_class_split.json'.format(dataset_source)))
