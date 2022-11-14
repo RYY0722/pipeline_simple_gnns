@@ -99,6 +99,11 @@ def load_data(dataset_source):
         for id, cla in enumerate(labels):
             id_by_class[cla[0]].append(id)
 
+        # stats = {}
+        # for cla, lst in id_by_class.items():
+        #     stats[cla] = len(lst)
+        # cnt_lst = list(stats.values())
+        # cnt_lst = np.asarray(cnt_lst)
         lb = preprocessing.LabelBinarizer()
         labels = lb.fit_transform(labels)
         degree = np.sum(adj, axis=1)
