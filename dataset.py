@@ -69,11 +69,11 @@ def load_data(dataset_source):
         adj = sparse_mx_to_torch_sparse_tensor(adj)
 
     elif dataset_source == 'email':
-        ns = np.load(DATASET_DIR / "/{}/{}-edge.npy".format(dataset_source, dataset_source))
+        ns = np.load(DATASET_DIR / "{}/{}-edge.npy".format(dataset_source, dataset_source))
         ns = ns.astype(np.int32)
         n1s = ns[:,0]
         n2s = ns[:,1]
-        node_info = pkl2dic(DATASET_DIR / "/{}/{}-node.pkl".format(dataset_source, dataset_source))
+        node_info = pkl2dic(DATASET_DIR / "{}/{}-node.pkl".format(dataset_source, dataset_source))
         id_lst, class_lst, feat_lst = node_info['id'], node_info['class'], node_info['feat']
 
         ## get labels
@@ -111,20 +111,20 @@ def load_data(dataset_source):
 
     elif dataset_source == 'reddit':
 
-        # ns = np.loadtxt(DATASET_DIR / "/{}/{}_network".format(dataset_source, dataset_source))
-        ns = np.load(DATASET_DIR / "/{}/{}-edge.npy".format(dataset_source, dataset_source))
+        # ns = np.loadtxt(DATASET_DIR / "{}/{}_network".format(dataset_source, dataset_source))
+        ns = np.load(DATASET_DIR / "{}/{}-edge.npy".format(dataset_source, dataset_source))
         ns = ns.astype(np.int32)
         n1s = ns[:,0]
         n2s = ns[:,1]
         # num_nodes = max(max(n1s),max(n2s)) + 1
         # labels = np.zeros((num_nodes,1))
         # all_feats = np.load(r'dataset\reddit.npy')
-        id_class_map = np.load(DATASET_DIR / "/{}/{}-label.npy".format(dataset_source,dataset_source)).astype(np.int32) #### !!! use int32
+        id_class_map = np.load(DATASET_DIR / "{}/{}-label.npy".format(dataset_source,dataset_source)).astype(np.int32) #### !!! use int32
         num_nodes = len(set(id_class_map[0]))
         labels = np.zeros((num_nodes,1))
         labels[id_class_map[0], 0] = id_class_map[1]
         # labels = np.reshape(labels, (num_nodes, 1))
-        features = np.load((DATASET_DIR / "/{}/{}-feats.npy".format(dataset_source, dataset_source)))
+        features = np.load((DATASET_DIR / "{}/{}-feats.npy".format(dataset_source, dataset_source)))
         print('nodes num',num_nodes)
         adj = sp.coo_matrix((np.ones(len(n1s)), (n1s, n2s)),
                                 shape=(num_nodes, num_nodes))    
@@ -154,13 +154,13 @@ def load_data(dataset_source):
 
         n1s = []
         n2s = []
-        for line in open(DATASET_DIR / "/{}/{}_network".format(dataset_source,dataset_source)):
+        for line in open(DATASET_DIR / "{}/{}_network".format(dataset_source,dataset_source)):
             n1, n2 = line.strip().split('\t')
             n1s.append(int(n1))
             n2s.append(int(n2))
 
-        data_train = sio.loadmat(DATASET_DIR / "/{}/{}_train.mat".format(dataset_source,dataset_source))
-        data_test = sio.loadmat(DATASET_DIR / "/{}/{}_test.mat".format(dataset_source,dataset_source))
+        data_train = sio.loadmat(DATASET_DIR / "{}/{}_train.mat".format(dataset_source,dataset_source))
+        data_test = sio.loadmat(DATASET_DIR / "{}/{}_test.mat".format(dataset_source,dataset_source))
 
         num_nodes = max(max(n1s),max(n2s)) + 1
         labels = np.zeros((num_nodes,1))
