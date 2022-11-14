@@ -15,7 +15,7 @@ from importlib import import_module
 import networkx as nx
 import json
 from dataset import shot_way_info, load_data
-
+from pathlib import Path
 # Training settings
 parser = argparse.ArgumentParser()
 parser.add_argument('--use_cuda', action='store_true', help='Disables CUDA training.')
@@ -122,6 +122,7 @@ def test(class_selected, id_support, id_query, n_way, k_shot):
 
 
 if __name__ == '__main__':
+    Path('results').mkdir(parents=True, exist_ok=True)
     random.seed(args.seed)
     torch.manual_seed(args.seed)
     if args.cuda:
