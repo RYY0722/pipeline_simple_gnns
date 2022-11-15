@@ -3,3 +3,6 @@
 /test_dgl.py
 /utils_bak.py
 /__pycache__
+/.vscode
+models/tent/__pycache__/
+hid.vscode/launch.json
