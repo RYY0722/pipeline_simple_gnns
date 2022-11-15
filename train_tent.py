@@ -15,10 +15,7 @@ from dataset import *
 from datetime import datetime
 if __name__ == '__main__':
     args = get_args()
-    args.cuda = args.use_cuda and torch.cuda.is_available()
     num_repeat = args.num_repeat
-
-
     random.seed(args.seed)
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
@@ -27,8 +24,6 @@ if __name__ == '__main__':
         print("Using GPU acceleration... ")
 
     loss_f = nn.CrossEntropyLoss()
-
-    Q=10
 
     fine_tune_steps = 20
     fine_tune_lr = 0.1
@@ -49,27 +44,25 @@ if __name__ == '__main__':
         args.use_cuda=False
     # args.use_cuda=False
 
-    N_set=[5]
-    K_set=[3]
-
-    for N, K in [(5,3)]: # num of ways
+    for N, K in shot_way_info[dataset]['pairs']: # num of ways
+        Q = shot_way_info[dataset]['Q']
     # for K in K_set: # num of shots
         for repeat in range(num_repeat):
             print('done')
             print(dataset)
             print('[',datetime.now().strftime("%H:%M:%S") ,'] repeat {}: N={},K={}'.format(repeat, N,K))
-
-            model = GCN_dense(nfeat=args.hidden1,
-                            nhid=args.hidden2,
+            nfeat = features.shape[1]
+            model = GCN_dense(nfeat=nfeat,
+                            nhid=args.hidden,
                             nclass=labels.max().item() + 1,
                             dropout=args.dropout)
 
             GCN_model=GCN_emb(nfeat=features.shape[1],
-                        nhid=args.hidden1,
+                        nhid=nfeat,
                         nclass=labels.max().item() + 1,
                         dropout=args.dropout)
 
-            classifier = Linear(args.hidden1, labels.max().item() + 1)
+            classifier = Linear(nfeat, labels.max().item() + 1)
 
             optimizer = optim.Adam([{'params': model.parameters()}, {'params': classifier.parameters()},{'params': GCN_model.parameters()}],
                                 lr=args.lr, weight_decay=args.weight_decay)
@@ -170,14 +163,14 @@ if __name__ == '__main__':
 
                 parameters=model.generater(class_generate_emb)
 
-                gc1_parameters=parameters[:(args.hidden1+1)*args.hidden2*2]
-                gc2_parameters=parameters[(args.hidden1+1)*args.hidden2*2:]
+                gc1_parameters=parameters[:(nfeat+1)*args.hidden*2]
+                gc2_parameters=parameters[(nfeat+1)*args.hidden*2:]
 
-                gc1_w=gc1_parameters[:args.hidden1*args.hidden2*2].reshape([2,args.hidden1,args.hidden2])
-                gc1_b=gc1_parameters[args.hidden1*args.hidden2*2:].reshape([2,args.hidden2])
+                gc1_w=gc1_parameters[:nfeat*args.hidden*2].reshape([2,nfeat,args.hidden])
+                gc1_b=gc1_parameters[nfeat*args.hidden*2:].reshape([2,args.hidden])
 
-                gc2_w=gc2_parameters[:args.hidden2*args.hidden2*2].reshape([2,args.hidden2,args.hidden2])
-                gc2_b=gc2_parameters[args.hidden2*args.hidden2*2:].reshape([2,args.hidden2])
+                gc2_w=gc2_parameters[:args.hidden*args.hidden*2].reshape([2,args.hidden,args.hidden])
+                gc2_b=gc2_parameters[args.hidden*args.hidden*2:].reshape([2,args.hidden])
 
                 model.eval()
                 ori_emb = []
