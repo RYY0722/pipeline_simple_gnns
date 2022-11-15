@@ -31,7 +31,7 @@ def load_data(dataset_source):
     class_list_train,class_list_valid,class_list_test=json.load(open(DATASET_DIR / '{}_class_split.json'.format(dataset_source)))
     if dataset_source in dgl_dataset:
         m = import_module('dgl.data')
-        dataset_class = getattr(m, 'CoauthorCSDataset')
+        dataset_class = getattr(m, dataset_source)
         data = dataset_class(raw_dir=DATASET_DIR / '{}'.format(dataset_source))
         g = data[0]
         num_class = data.num_classes

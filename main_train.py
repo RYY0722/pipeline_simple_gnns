@@ -16,31 +16,7 @@ import networkx as nx
 import json
 from dataset import shot_way_info, load_data
 from pathlib import Path
-# Training settings
-parser = argparse.ArgumentParser()
-parser.add_argument('--use_cuda', action='store_true', help='Disables CUDA training.')
-parser.add_argument('--seed', type=int, default=1234, help='Random seed.')
-parser.add_argument('--episodes', type=int, default=500,
-                    help='Number of episodes to train.')
-parser.add_argument('--lr', type=float, default=0.005,
-                    help='Initial learning rate.')
-parser.add_argument('--weight_decay', type=float, default=5e-4,
-                    help='Weight decay (L2 loss on parameters).')
-parser.add_argument('--hidden', type=int, default=16,
-                    help='Number of hidden units.')
-parser.add_argument('--dropout', type=float, default=0.5,
-                    help='Dropout rate (1 - keep probability).')
-
-
-parser.add_argument('--way', type=int, default=5, help='way.')
-parser.add_argument('--shot', type=int, default=5, help='shot.')
-parser.add_argument('--qry', type=int, help='k shot for query set', default=10)
-parser.add_argument('--dataset', type=str, help='Dataset name', default='CoauthorCSDataset')
-
-#### added by ryy
-parser.add_argument('--model', type=str, help='Model name: GCN/GAT/GPN/GraghSage', default='GCN')
-parser.add_argument('--num_repeat', type=int, help='Repeat times', default=5)
-args = parser.parse_args()
+args = get_args()
 args.cuda = args.use_cuda and torch.cuda.is_available()
 num_repeat = args.num_repeat
 
@@ -184,12 +160,12 @@ if __name__ == '__main__':
             t_total = time.time()
             meta_train_acc = []
             best_valid_acc = 0
-            for episode in range(args.episodes):
+            for episode in range(args.epochs):
                 id_support, id_query, class_selected = \
                     task_generator(id_by_class, class_list_train, n_way, k_shot, n_query)
                 acc_train, f1_train = train(class_selected, id_support, id_query, n_way, k_shot)
                 meta_train_acc.append(acc_train)
-                if (episode > 0 and episode % 100 == 0) or (episode == args.episodes-1):    
+                if (episode > 0 and episode % 100 == 0) or (episode == args.epochs-1):    
                     print("-------Episode {}-------".format(episode))
                     print("Meta-Train_Accuracy: {}".format(np.array(meta_train_acc).mean(axis=0)))
 
