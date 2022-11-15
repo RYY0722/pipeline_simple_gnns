@@ -22,6 +22,7 @@ shot_way_info = {'Amazon_clothing':{'pairs':[(5,3), (5,5), (3,3), (3,2) ], 'Q':1
                  'dblp':{'pairs':[(5,3), (5,5), (10,5), (10,3)],'Q':10},
                  'email':{'pairs':[(5,3), (5,5), (7,3), (7,5)],'Q':5},
                  'reddit':{'pairs':[(5,3), (5,5),  (10,3), (10,5)],'Q':10},
+                 'ogbn-arxiv':{'pairs':[(5,3), (5,5),  (10,3), (10,5)],'Q':10},
                  'cora-full':{'pairs':[(5,3), (5,5), (10,3), (10,5)],'Q':10},
                  'CoauthorCSDataset':{'pairs':[(5,3), (5,5), (3,2), (3,3)],'Q':10},
                  'AmazonCoBuyComputerDataset':{'pairs':[(3,2), (3,3)],'Q':10},
@@ -67,7 +68,7 @@ def load_data(dataset_source):
         features = torch.FloatTensor(features)
         labels = torch.LongTensor(np.where(labels)[1])
         adj = sparse_mx_to_torch_sparse_tensor(adj)
-
+        print(num_nodes, 'nodes')
     elif dataset_source == 'email':
         ns = np.load(DATASET_DIR / "{}/{}-edge.npy".format(dataset_source, dataset_source))
         ns = ns.astype(np.int32)
