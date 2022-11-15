@@ -31,6 +31,8 @@ def get_args():
     parser.add_argument('--num_repeat', type=int, help='Repeat times', default=5)
     #### TENT specific
     parser.add_argument('--hidden2', type=int, help='Dimension of the second hidden layer', default=16)
+    #### MAML specific
+    parser.add_argument('--task_num', type=int, help='Task number', default=32)
     return parser.parse_args()
 def normalize(mx):
     """Row-normalize sparse matrix"""
