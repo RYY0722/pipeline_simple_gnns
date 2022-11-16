@@ -91,6 +91,9 @@ def task_generator(id_by_class, class_list, n_way, k_shot, m_query):
 
     return np.array(id_support), np.array(id_query), class_selected
 
+def count_acc(logits, label):
+    pred = torch.argmax(logits, dim=1)
+    return (pred == label).type(torch.FloatTensor).mean().item()
 
 
 def euclidean_dist(x, y):
